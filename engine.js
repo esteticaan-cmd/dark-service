@@ -373,7 +373,6 @@ const GameEngine = (() => {
             showEnding(scene.ending);
         }
 
-        AudioManager.playClick();
     }
 
     function hideTextBox() {
