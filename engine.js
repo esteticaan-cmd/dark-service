@@ -299,6 +299,18 @@ const GameEngine = (() => {
         els.textBox.classList.remove('hidden');
         els.textBox.classList.add('visible');
         els.speakerName.textContent = speaker || '';
+        // Set data-speaker for CSS coloring
+        const speakerMap = {
+            'Сержант Горан': 'goran', 'Горан': 'goran',
+            'Драган': 'dragan',
+            'Лука': 'luka',
+            'Марко': 'marko',
+            'Капитан Зоран': 'zoran',
+            'Милош': 'milosh',
+            'Ненад': 'nenad',
+            'Дежурный': 'soldier',
+        };
+        els.speakerName.setAttribute('data-speaker', speakerMap[speaker] || (speaker ? 'narrator' : ''));
         els.textContent.innerHTML = '';
         els.textContinue.classList.remove('visible');
 
@@ -384,9 +396,14 @@ const GameEngine = (() => {
     function showChoices(choices) {
         hideTextBox();
 
-        // Filter choices based on conditions
+        // Filter choices based on conditions and flags
         const available = choices.filter(c => {
-            if (c.condition) return c.condition(state);
+            if (c.condition && !c.condition(state)) return false;
+            if (c.checkFlag) {
+                for (const [key, val] of Object.entries(c.checkFlag)) {
+                    if (state.flags[key] !== val) return false;
+                }
+            }
             return true;
         });
 

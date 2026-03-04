@@ -1,4 +1,4 @@
-// scenes.js — All game scenes (50+), 5 chapters, 3 endings
+// scenes.js — All game scenes (150+), 5 chapters, 3 endings, 21 choice points
 // Scene format:
 // {
 //   chapter, bg, chars, mood, ambience, sfx, flicker,
@@ -58,6 +58,65 @@ const SCENES = {
         ambience: '',
         speaker: null,
         text: 'Казарма встретила запахом сырости и хлорки. Длинный коридор с потрескавшимся линолеумом, тусклые лампы под потолком — одна из трёх мигала, две не горели.\n\nПо стенам — облупившаяся зелёная краска. На доске объявлений — пожелтевший распорядок дня, которому явно никто не следует.',
+        next: 'ch1_explore_choice',
+    },
+
+    ch1_explore_choice: {
+        bg: 'barracks',
+        chars: [],
+        mood: 'dark',
+        speaker: null,
+        text: 'Коридор пуст. Где-то капает вода. Что делать?',
+        choices: [
+            {
+                id: 'ch1_explore_look',
+                text: 'Осмотреть казарму — понять, куда попал.',
+                spirit: 3,
+                setFlag: { explored: true },
+                next: 'ch1_explore_look_1',
+            },
+            {
+                id: 'ch1_explore_bed',
+                text: 'Найти свободную койку и лечь. Сил нет.',
+                spirit: -2,
+                next: 'ch1_explore_bed_1',
+            },
+            {
+                id: 'ch1_explore_quiet',
+                text: 'Стоять тихо у входа. Не привлекать внимания.',
+                spirit: 0,
+                setFlag: { cautious: true },
+                next: 'ch1_explore_quiet_1',
+            },
+        ],
+    },
+
+    ch1_explore_look_1: {
+        bg: 'barracks',
+        chars: [],
+        mood: 'dark',
+        speaker: null,
+        text: 'Марко прошёл по казарме. Двадцать коек в два ряда, половина — с продавленными матрасами. На стене у входа — следы от кулака. На одной тумбочке — нацарапано: «Держись 347 дней».\n\nЗнание — это оружие. Даже здесь.',
+        spiritMod: 2,
+        next: 'ch1_s6',
+    },
+
+    ch1_explore_bed_1: {
+        bg: 'barracks',
+        chars: [],
+        mood: 'dark',
+        speaker: null,
+        text: 'Марко бросил рюкзак на ближайшую свободную койку и сел. Пружины скрипнули жалобно.\n\nУсталость навалилась разом — дорога, нервы, незнакомое место. Хотелось закрыть глаза и проснуться дома.',
+        next: 'ch1_s6',
+    },
+
+    ch1_explore_quiet_1: {
+        bg: 'barracks',
+        chars: [],
+        mood: 'dark',
+        speaker: null,
+        text: 'Марко прижался к стене у двери. Инстинкт подсказывал: в незнакомом месте лучше наблюдать.\n\nОн простоял так минут пять, прислушиваясь к звукам казармы — скрип, капель, чьё-то бормотание за стеной.',
+        spiritMod: 1,
         next: 'ch1_s6',
     },
 
@@ -76,6 +135,68 @@ const SCENES = {
         mood: 'dark',
         speaker: 'Лука',
         text: 'Привет. Ты новый? Я Лука. Приехал неделю назад.\n\n...Не смотри на синяк. Упал. Все здесь «падают».',
+        next: 'ch1_luka_choice',
+    },
+
+    ch1_luka_choice: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5, scale: 0.95 }],
+        mood: 'dark',
+        speaker: null,
+        text: 'Лука смотрит на тебя выжидающе. Первый человек, с которым ты здесь заговорил.',
+        choices: [
+            {
+                id: 'ch1_luka_trust',
+                text: 'Протянуть руку: «Я Марко. Будем держаться вместе.»',
+                spirit: 5,
+                setFlag: { luka_trust: true },
+                next: 'ch1_luka_trust_1',
+            },
+            {
+                id: 'ch1_luka_distance',
+                text: 'Кивнуть холодно. Не стоит привязываться.',
+                spirit: -3,
+                setFlag: { luka_distance: true },
+                next: 'ch1_luka_distance_1',
+            },
+            {
+                id: 'ch1_luka_ask',
+                text: 'Спросить прямо: «Кто тебя ударил?»',
+                spirit: 0,
+                setFlag: { luka_asked: true },
+                next: 'ch1_luka_ask_1',
+            },
+        ],
+    },
+
+    ch1_luka_trust_1: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5, scale: 0.95 }],
+        mood: 'dark',
+        speaker: 'Лука',
+        text: 'Лука пожал руку — крепко, как утопающий хватается за верёвку.\n\n«Спасибо, Марко. Здесь... здесь трудно без кого-то рядом. Рад, что ты нормальный.»',
+        spiritMod: 3,
+        next: 'ch1_s8',
+    },
+
+    ch1_luka_distance_1: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5, scale: 0.95 }],
+        mood: 'dark',
+        speaker: null,
+        text: 'Лука опустил глаза. Уголки губ дрогнули.\n\n«Ладно. Понимаю. Здесь каждый сам за себя.»\n\nОн отвернулся к стене. Марко остался один посреди казармы.',
+        spiritMod: -2,
+        next: 'ch1_s8',
+    },
+
+    ch1_luka_ask_1: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5, scale: 0.95 }],
+        mood: 'dark',
+        speaker: 'Лука',
+        text: 'Лука вздрогнул. Помолчал.\n\n«Сержант Горан. Он тут... главный. По-настоящему главный. Офицеры закрывают глаза. Бьёт за всё — за взгляд, за слово, за то, что дышишь не так.\n\nНе лезь к нему, Марко. Просто не лезь.»',
+        spiritMod: 1,
+        setFlag: { knows_goran: true },
         next: 'ch1_s8',
     },
 
@@ -213,7 +334,7 @@ const SCENES = {
         speaker: 'Сержант Горан',
         text: 'Крепкий. Ладно, может, из тебя толк и выйдет.\n\nСледующий!',
         spiritMod: 3,
-        next: 'ch1_end',
+        next: 'ch1_morning_choice',
     },
 
     ch1_resist_1: {
@@ -244,7 +365,7 @@ const SCENES = {
         speaker: 'Сержант Горан',
         text: 'Право? Здесь нет права. Здесь есть я.\n\nЗапомни это, умник. В следующий раз будет хуже.',
         spiritMod: -5,
-        next: 'ch1_end',
+        next: 'ch1_morning_choice',
     },
 
     ch1_allies_1: {
@@ -273,6 +394,68 @@ const SCENES = {
         speaker: null,
         text: 'Били всех. Но после, когда Горан и Драган ушли, Лука подошёл к Марко в темноте.\n\n«Спасибо, что посмотрел на нас. Хоть кто-то.»\n\nМаленькая искра — но в этой тьме и она была чем-то.',
         spiritMod: 3,
+        next: 'ch1_morning_choice',
+    },
+
+    ch1_morning_choice: {
+        bg: 'night_barracks',
+        chars: [],
+        mood: 'dark',
+        ambience: 'rain',
+        speaker: null,
+        text: 'Под утро казарма затихла. Тело болело. Но голова работала — лихорадочно, ясно. Что дальше?',
+        choices: [
+            {
+                id: 'ch1_morning_letter',
+                text: 'Написать письмо домой. Маме. Хоть что-то нормальное.',
+                spirit: 5,
+                setFlag: { wrote_home: true },
+                next: 'ch1_morning_letter_1',
+            },
+            {
+                id: 'ch1_morning_adapt',
+                text: 'Запомнить правила. Выучить систему. Адаптироваться.',
+                spirit: 0,
+                setFlag: { adapting: true },
+                next: 'ch1_morning_adapt_1',
+            },
+            {
+                id: 'ch1_morning_rage',
+                text: 'Лежать в темноте и чувствовать, как внутри растёт ярость.',
+                spirit: -5,
+                setFlag: { anger_growing: true },
+                next: 'ch1_morning_rage_1',
+            },
+        ],
+    },
+
+    ch1_morning_letter_1: {
+        bg: 'night_barracks',
+        chars: [],
+        mood: 'dark',
+        speaker: null,
+        text: 'Марко достал мятый листок и огрызок карандаша. Писал в темноте, на ощупь.\n\n«Мама, у меня всё хорошо. Кормят нормально. Ребята в казарме хорошие.»\n\nВсё — ложь. Но эта ложь давала силы.',
+        spiritMod: 3,
+        next: 'ch1_end',
+    },
+
+    ch1_morning_adapt_1: {
+        bg: 'night_barracks',
+        chars: [],
+        mood: 'dark',
+        speaker: null,
+        text: 'Горан бьёт после отбоя. Драган — днём, когда офицеров нет. Капитан пьёт. Фельдшер пишет «падение».\n\nМарко запоминал. Каждую деталь, каждое правило невидимой иерархии. Знание — защита.',
+        spiritMod: 2,
+        next: 'ch1_end',
+    },
+
+    ch1_morning_rage_1: {
+        bg: 'night_barracks',
+        chars: [],
+        mood: 'dread',
+        speaker: null,
+        text: 'Кулаки сжимались сами. В темноте, под тонким одеялом, Марко чувствовал что-то новое — горячее, тёмное, живое.\n\nЯрость. Не страх — ярость.\n\nПока она была бесформенной. Но она росла.',
+        spiritMod: -3,
         next: 'ch1_end',
     },
 
@@ -326,6 +509,63 @@ const SCENES = {
         mood: 'dark',
         speaker: 'Лука',
         text: 'Я не сплю уже третью ночь. Каждый раз, когда закрываю глаза — слышу шаги в коридоре.\n\nМарко... как ты это выдерживаешь?',
+        next: 'ch2_respond_choice',
+    },
+
+    ch2_respond_choice: {
+        bg: 'mess',
+        chars: [{ id: 'luka', x: 0.4 }],
+        mood: 'dark',
+        speaker: null,
+        text: 'Лука ждёт ответа. Его ложка замерла над тарелкой.',
+        choices: [
+            {
+                id: 'ch2_respond_honest',
+                text: '«Не знаю, Лука. Считаю дни. Один за другим.»',
+                spirit: 3,
+                next: 'ch2_respond_honest_1',
+            },
+            {
+                id: 'ch2_respond_tough',
+                text: '«Не думай об этом. Ешь. Тебе нужны силы.»',
+                spirit: 0,
+                next: 'ch2_respond_tough_1',
+            },
+            {
+                id: 'ch2_respond_dark',
+                text: '«Выдерживаю? Я не выдерживаю. Я просто ещё не сломался.»',
+                spirit: -3,
+                next: 'ch2_respond_dark_1',
+            },
+        ],
+    },
+
+    ch2_respond_honest_1: {
+        bg: 'mess',
+        chars: [{ id: 'luka', x: 0.4 }],
+        mood: 'dark',
+        speaker: 'Лука',
+        text: 'Считаешь дни... Да. Это хороший способ.\n\nЛука достал огрызок карандаша и начал чертить чёрточки на салфетке. Одна за другой. Маленький ритуал выживания.',
+        spiritMod: 2,
+        next: 'ch2_s5',
+    },
+
+    ch2_respond_tough_1: {
+        bg: 'mess',
+        chars: [{ id: 'luka', x: 0.4 }],
+        mood: 'dark',
+        speaker: null,
+        text: 'Лука молча кивнул и начал есть. Механически, не чувствуя вкуса.\n\nПравильный совет. Тело должно работать, даже когда душа не хочет.',
+        next: 'ch2_s5',
+    },
+
+    ch2_respond_dark_1: {
+        bg: 'mess',
+        chars: [{ id: 'luka', x: 0.4 }],
+        mood: 'dark',
+        speaker: 'Лука',
+        text: 'Лука посмотрел на Марко. В его глазах мелькнуло что-то — узнавание. Два человека на краю.\n\n«Значит, мы оба. Два не-сломавшихся. Пока.»',
+        spiritMod: -1,
         next: 'ch2_s5',
     },
 
@@ -338,6 +578,68 @@ const SCENES = {
         ambience: '',
         speaker: null,
         text: 'Ночная побудка. Третья за неделю.\n\nГоран врывался в казарму, переворачивал кровати, орал. Заставлял стоять по стойке «смирно» часами — до тех пор, пока кто-нибудь не падал.',
+        next: 'ch2_night_raid_choice',
+    },
+
+    ch2_night_raid_choice: {
+        bg: 'night_barracks',
+        chars: [{ id: 'goran', x: 0.5, scale: 1.05 }],
+        mood: 'dread',
+        speaker: null,
+        text: 'Свет врезается в глаза. Крик: «ПОДЪЁМ!» Секунда на решение.',
+        choices: [
+            {
+                id: 'ch2_raid_first',
+                text: 'Вскочить первым. Показать, что готов.',
+                spirit: 3,
+                setFlag: { obedient: true },
+                next: 'ch2_raid_first_1',
+            },
+            {
+                id: 'ch2_raid_slow',
+                text: 'Медленно встать. Не давать им удовольствия.',
+                spirit: -3,
+                next: 'ch2_raid_slow_1',
+            },
+            {
+                id: 'ch2_raid_hide',
+                text: 'Притвориться спящим. Может, пронесёт.',
+                spirit: -5,
+                next: 'ch2_raid_hide_1',
+            },
+        ],
+    },
+
+    ch2_raid_first_1: {
+        bg: 'night_barracks',
+        chars: [{ id: 'goran', x: 0.5, scale: 1.05 }],
+        mood: 'dread',
+        speaker: 'Сержант Горан',
+        text: 'Марко уже стоял, когда другие ещё ворочались. Горан скользнул по нему взглядом.\n\n«Хм. Этот хотя бы учится.»\n\nВ ту ночь Марко не тронули. Маленькая победа.',
+        spiritMod: 2,
+        next: 'ch2_s6',
+    },
+
+    ch2_raid_slow_1: {
+        bg: 'night_barracks',
+        chars: [{ id: 'goran', x: 0.5, scale: 1.05 }],
+        mood: 'dread',
+        sfx: 'impact',
+        speaker: null,
+        text: 'Марко встал — нарочито медленно. Посмотрел Горану в глаза.\n\nГоран ухмыльнулся. Удар — не сильный, но обидный, по затылку.\n\n«Быстрее, дух. В следующий раз я не буду таким добрым.»',
+        spiritMod: -2,
+        next: 'ch2_s6',
+    },
+
+    ch2_raid_hide_1: {
+        bg: 'night_barracks',
+        chars: [{ id: 'dragan', x: 0.5 }],
+        mood: 'dread',
+        sfx: 'impact',
+        flicker: true,
+        speaker: 'Драган',
+        text: 'Одеяло сорвали. Драган схватил за ворот и швырнул с койки на пол.\n\n«Дрыхнешь? Сейчас проснёшься!»\n\nБили долго. Притворяться — худшая идея в казарме.',
+        spiritMod: -5,
         next: 'ch2_s6',
     },
 
@@ -357,6 +659,66 @@ const SCENES = {
         mood: 'dread',
         speaker: null,
         text: 'Лука стоял на коленях. Его трясло. Драган пнул его — несильно, лениво, как пинают собаку.\n\nОстальные призывники смотрели в пол. Никто не шевелился.',
+        next: 'ch2_witness_choice',
+    },
+
+    ch2_witness_choice: {
+        bg: 'night_barracks',
+        chars: [{ id: 'luka', x: 0.4 }, { id: 'dragan', x: 0.65 }],
+        mood: 'dread',
+        speaker: null,
+        text: 'Драган замахивается снова. Лука закрывает голову руками. Время — секунда.',
+        choices: [
+            {
+                id: 'ch2_witness_step',
+                text: 'Шагнуть вперёд: «Хватит. Он понял.»',
+                spirit: 5,
+                setFlag: { defended_luka: true },
+                next: 'ch2_witness_step_1',
+            },
+            {
+                id: 'ch2_witness_look',
+                text: 'Смотреть в пол, как все. Выживание важнее.',
+                spirit: -5,
+                next: 'ch2_witness_look_1',
+            },
+            {
+                id: 'ch2_witness_memorize',
+                text: 'Запоминать. Каждый удар. Когда-нибудь пригодится.',
+                spirit: -2,
+                setFlag: { witness_memory: true },
+                next: 'ch2_witness_memorize_1',
+            },
+        ],
+    },
+
+    ch2_witness_step_1: {
+        bg: 'night_barracks',
+        chars: [{ id: 'dragan', x: 0.5 }],
+        mood: 'dread',
+        sfx: 'impact',
+        speaker: 'Драган',
+        text: 'О, герой нашёлся? Хочешь вместо него?\n\nДраган ударил Марко — коротко, в живот. Но отошёл. Лука поднялся с пола.\n\nМаленькая победа. Маленькая, но настоящая.',
+        spiritMod: 3,
+        next: 'ch2_s8',
+    },
+
+    ch2_witness_look_1: {
+        bg: 'night_barracks',
+        chars: [{ id: 'dragan', x: 0.65 }],
+        mood: 'dread',
+        speaker: null,
+        text: 'Марко уставился в пол. Считал трещины в линолеуме. Слышал звуки ударов.\n\nКогда Драган ушёл, Марко не мог посмотреть Луке в глаза.',
+        spiritMod: -3,
+        next: 'ch2_s8',
+    },
+
+    ch2_witness_memorize_1: {
+        bg: 'night_barracks',
+        chars: [{ id: 'dragan', x: 0.65 }],
+        mood: 'dread',
+        speaker: null,
+        text: 'Марко смотрел. Не отводя глаз. Запоминал — лицо Драгана, его движения, его самодовольную ухмылку.\n\nВсё это ляжет в копилку. Информация — единственное оружие, которое нельзя отобрать.',
         next: 'ch2_s8',
     },
 
@@ -493,7 +855,69 @@ const SCENES = {
         mood: 'dark',
         ambience: 'rain_wind',
         speaker: null,
-        text: 'Недели складывались в месяц. Тело привыкало к побоям — или просто переставало чувствовать. Разум учился отключаться, уходить куда-то внутрь.\n\nЗа забором часть наступала зима. Холодная, равнодушная, как всё в этом месте.\n\nНо где-то внутри тлел огонёк. Пока ещё тлел.',
+        text: 'Недели складывались в месяц. Тело привыкало к побоям — или просто переставало чувствовать. Разум учился отключаться, уходить куда-то внутрь.\n\nЗа забором часть наступала зима. Холодная, равнодушная, как всё в этом месте.',
+        next: 'ch2_winter_choice',
+    },
+
+    ch2_winter_choice: {
+        bg: 'outside',
+        chars: [],
+        mood: 'dark',
+        ambience: 'rain_wind',
+        speaker: null,
+        text: 'Ночь перед первым снегом. Что помогает держаться?',
+        choices: [
+            {
+                id: 'ch2_winter_home',
+                text: 'Воспоминания о доме. Мамин голос. Запах хлеба.',
+                spirit: 5,
+                setFlag: { anchor: 'home' },
+                next: 'ch2_winter_home_1',
+            },
+            {
+                id: 'ch2_winter_anger',
+                text: 'Злость. Чистая, холодная злость на весь этот мир.',
+                spirit: -5,
+                setFlag: { anchor: 'anger' },
+                next: 'ch2_winter_anger_1',
+            },
+            {
+                id: 'ch2_winter_bond',
+                text: 'Лука. Ребята. Те, кто рядом — в одной грязи.',
+                spirit: 5,
+                setFlag: { anchor: 'bonds' },
+                next: 'ch2_winter_bond_1',
+            },
+        ],
+    },
+
+    ch2_winter_home_1: {
+        bg: 'night_barracks',
+        chars: [],
+        mood: 'calm',
+        speaker: null,
+        text: 'Марко закрыл глаза и увидел кухню. Мать у плиты, отец за столом с газетой. Простые вещи. Обычные.\n\nНо сейчас они казались чем-то невозможным. Раем, который ждёт за бетонным забором.\n\nТриста дней. Он выдержит.',
+        spiritMod: 3,
+        next: 'ch3_s1',
+    },
+
+    ch2_winter_anger_1: {
+        bg: 'night_barracks',
+        chars: [],
+        mood: 'dread',
+        speaker: null,
+        text: 'Злость грела лучше одеяла. Горячая, живая, настоящая.\n\nМарко лежал и сжимал кулаки. Каждый удар Горана, каждое унижение — всё это копилось внутри, как порох в снаряде.\n\nКогда-нибудь рванёт.',
+        spiritMod: -3,
+        next: 'ch3_s1',
+    },
+
+    ch2_winter_bond_1: {
+        bg: 'night_barracks',
+        chars: [],
+        mood: 'calm',
+        speaker: null,
+        text: 'Лука на соседней койке. Ещё один призывник — Ненад — через две кровати. Тихое «спокойной ночи» в темноте.\n\nВместе проще. Не легче — проще. Есть разница.\n\nМарко впервые за месяц уснул спокойно.',
+        spiritMod: 3,
         next: 'ch3_s1',
     },
 
@@ -537,6 +961,67 @@ const SCENES = {
         mood: 'dread',
         speaker: 'Драган',
         text: 'О, что тут у нас? Фотка мамочки? Красивая.\n\nДраган порвал фотографию Луки пополам и бросил на пол.',
+        next: 'ch3_photo_choice',
+    },
+
+    ch3_photo_choice: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.3 }, { id: 'dragan', x: 0.65 }],
+        mood: 'dread',
+        speaker: null,
+        text: 'Половинки фотографии лежат на грязном полу. Лука побелел. Его руки трясутся.',
+        choices: [
+            {
+                id: 'ch3_photo_grab',
+                text: 'Быстро поднять обрывки фото, пока Драган не заметил.',
+                spirit: 3,
+                setFlag: { saved_photo: true },
+                next: 'ch3_photo_grab_1',
+            },
+            {
+                id: 'ch3_photo_freeze',
+                text: 'Замереть. Любое движение — повод для побоев.',
+                spirit: -2,
+                next: 'ch3_photo_freeze_1',
+            },
+            {
+                id: 'ch3_photo_speak',
+                text: '«Зачем? Это просто фотография.»',
+                spirit: -5,
+                setFlag: { challenged_dragan: true },
+                next: 'ch3_photo_speak_1',
+            },
+        ],
+    },
+
+    ch3_photo_grab_1: {
+        bg: 'barracks',
+        chars: [{ id: 'dragan', x: 0.65 }],
+        mood: 'dread',
+        speaker: null,
+        text: 'Марко наклонился и подобрал обе половинки. Сунул в карман. Драган не заметил — он уже перешёл к следующей тумбочке.\n\nПозже, в темноте, Марко отдаст фото Луке. Тот склеит его скотчем из медсанчасти.',
+        spiritMod: 2,
+        next: 'ch3_s5',
+    },
+
+    ch3_photo_freeze_1: {
+        bg: 'barracks',
+        chars: [{ id: 'dragan', x: 0.65 }],
+        mood: 'dread',
+        speaker: null,
+        text: 'Марко стоял, стиснув зубы. Половинки фотографии лежали на полу, и по ним прошлись чьи-то сапоги.\n\nВечером Лука искал обрывки. Нашёл только один — маму без лица.',
+        spiritMod: -2,
+        next: 'ch3_s5',
+    },
+
+    ch3_photo_speak_1: {
+        bg: 'barracks',
+        chars: [{ id: 'dragan', x: 0.5 }],
+        mood: 'dread',
+        sfx: 'impact',
+        speaker: 'Драган',
+        text: 'Что ты сказал? «Просто фотография»? А ты — просто мясо.\n\nУдар в скулу. Марко устоял на ногах, но во рту появился вкус крови.\n\nДраган запомнит. Марко тоже.',
+        spiritMod: -3,
         next: 'ch3_s5',
     },
 
@@ -596,6 +1081,57 @@ const SCENES = {
         mood: 'dark',
         speaker: 'Милош',
         text: 'Слышал про Луку. Хреново.\n\nМарко, послушай. Я не могу остановить Горана — он старше меня по сроку. Но могу дать совет: не высовывайся. Терпи. Время пройдёт.\n\nИли...',
+        next: 'ch3_milosh_choice',
+    },
+
+    ch3_milosh_choice: {
+        bg: 'barracks',
+        chars: [{ id: 'milosh', x: 0.5 }],
+        mood: 'dark',
+        speaker: null,
+        text: 'Милош замолчал, ожидая реакции. Его глаза — усталые, но не злые.',
+        choices: [
+            {
+                id: 'ch3_milosh_listen',
+                text: '«Говори. Я слушаю.»',
+                spirit: 0,
+                setFlag: { milosh_ally: true },
+                next: 'ch3_s11',
+            },
+            {
+                id: 'ch3_milosh_reject',
+                text: '«Мне не нужны советы от тех, кто молчит, когда бьют.»',
+                spirit: -3,
+                next: 'ch3_milosh_reject_1',
+            },
+            {
+                id: 'ch3_milosh_why',
+                text: '«Почему тебе не всё равно? Ты ведь один из них.»',
+                spirit: 2,
+                setFlag: { milosh_questioned: true },
+                next: 'ch3_milosh_why_1',
+            },
+        ],
+    },
+
+    ch3_milosh_reject_1: {
+        bg: 'barracks',
+        chars: [{ id: 'milosh', x: 0.5 }],
+        mood: 'dark',
+        speaker: 'Милош',
+        text: 'Милош вздрогнул. Потом кивнул — медленно, тяжело.\n\n«Ты прав. Я молчу. Потому что знаю, что будет, если не молчать.\n\nНо я пытаюсь, Марко. По-своему.»\n\nОн ушёл. Марко остался один.',
+        spiritMod: -2,
+        next: 'ch3_s12',
+    },
+
+    ch3_milosh_why_1: {
+        bg: 'barracks',
+        chars: [{ id: 'milosh', x: 0.5 }],
+        mood: 'dark',
+        speaker: 'Милош',
+        text: 'Милош долго молчал. Потом:\n\n«Потому что три года назад я был на твоём месте. И мне никто ничего не сказал. Никто не предупредил.\n\nЯ сломался, Марко. Просто это не видно снаружи.»',
+        spiritMod: 2,
+        setFlag: { milosh_backstory: true },
         next: 'ch3_s11',
     },
 
@@ -671,9 +1207,69 @@ const SCENES = {
         bg: 'barracks',
         chars: [{ id: 'luka', x: 0.5 }],
         mood: 'calm',
+        speaker: 'Лука',
+        text: 'Лука вернулся из медсанчасти через неделю. Тихий, с забинтованными рёбрами.\n\n«Мы выживем, Марко. Но мне нужен план. Не просто терпеть — а как-то... бороться. По-умному.»',
+        spiritMod: 3,
+        next: 'ch3_plan_choice',
+    },
+
+    ch3_plan_choice: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5 }],
+        mood: 'dark',
         speaker: null,
-        text: 'Лука вернулся из медсанчасти через неделю. Тихий, с забинтованными рёбрами. Но в его глазах появилось что-то новое — не страх, а холодная решимость.\n\n«Мы выживем», — сказал он Марко. И Марко кивнул.',
-        spiritMod: 5,
+        text: 'Лука смотрит серьёзно. Он ждёт идеи.',
+        choices: [
+            {
+                id: 'ch3_plan_document',
+                text: '«Будем записывать всё. Даты, имена, травмы. Для прокуратуры.»',
+                spirit: 5,
+                setFlag: { documenting: true },
+                next: 'ch3_plan_document_1',
+            },
+            {
+                id: 'ch3_plan_invisible',
+                text: '«Станем невидимыми. Не выделяться. Пережить — и забыть.»',
+                spirit: 2,
+                next: 'ch3_plan_invisible_1',
+            },
+            {
+                id: 'ch3_plan_together',
+                text: '«Объединить остальных призывников. Вместе нас не сломать.»',
+                spirit: 3,
+                setFlag: { united: true },
+                next: 'ch3_plan_together_1',
+            },
+        ],
+    },
+
+    ch3_plan_document_1: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5 }],
+        mood: 'dark',
+        speaker: 'Лука',
+        text: '«Прокуратура...» Лука задумался. Потом кивнул.\n\n«Мне дали тетрадь в медсанчасти. Буду писать мелко, между строк. Даты, кто, что, какие следы.»\n\nОпасный план. Но хоть какой-то.',
+        spiritMod: 2,
+        next: 'ch3_end',
+    },
+
+    ch3_plan_invisible_1: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5 }],
+        mood: 'dark',
+        speaker: 'Лука',
+        text: '«Невидимыми... да. Серые мыши. Не первые, не последние. Середина строя.»\n\nЛука грустно улыбнулся.\n\n«Я уже почти невидимый. Осталось научить тебя.»',
+        next: 'ch3_end',
+    },
+
+    ch3_plan_together_1: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5 }],
+        mood: 'dark',
+        speaker: 'Лука',
+        text: '«Объединить? Кого — Ненада, которого трясёт от каждого звука? Или тех двоих, которые уже сами начали бить младших?»\n\nПауза.\n\n«Но... можно попробовать. Хотя бы трое-четверо. Этого хватит.»',
+        spiritMod: 2,
+        setFlag: { has_group: true },
         next: 'ch3_end',
     },
 
@@ -712,6 +1308,47 @@ const SCENES = {
         mood: 'tension',
         speaker: null,
         text: 'Его поймал Милош. Не Горан — Милош.\n\nСтарослужащий стоял у склада и курил. Молча посмотрел на Марко, на его рюкзак. Покачал головой.',
+        next: 'ch3_escape_react_choice',
+    },
+
+    ch3_escape_react_choice: {
+        bg: 'outside',
+        chars: [{ id: 'milosh', x: 0.5 }],
+        mood: 'tension',
+        speaker: null,
+        text: 'Милош молча курит. Ждёт. Рюкзак на плече тянет вниз.',
+        choices: [
+            {
+                id: 'ch3_escape_beg',
+                text: '«Пожалуйста, не сдавай. Я не могу больше.»',
+                spirit: -3,
+                next: 'ch3_escape_beg_1',
+            },
+            {
+                id: 'ch3_escape_defiant',
+                text: '«Что, доложишь Горану? Давай.»',
+                spirit: -5,
+                next: 'ch3_escape_defiant_1',
+            },
+        ],
+    },
+
+    ch3_escape_beg_1: {
+        bg: 'outside',
+        chars: [{ id: 'milosh', x: 0.5 }],
+        mood: 'dark',
+        speaker: 'Милош',
+        text: 'Милош затушил сигарету. Тихо:\n\n«Я знаю, Марко. Знаю. Но побег — это не выход. Это конец.\n\nВозвращайся. Я промолчу.»',
+        next: 'ch3_escape_3',
+    },
+
+    ch3_escape_defiant_1: {
+        bg: 'outside',
+        chars: [{ id: 'milosh', x: 0.5 }],
+        mood: 'tension',
+        speaker: 'Милош',
+        text: '«Нет, не доложу. Я не Горан.»\n\nМилош подошёл ближе. Голос стал жёстче:\n\n«Но ты сам себя погубишь. За побег — трибунал. Два года. Подумай.»',
+        spiritMod: -2,
         next: 'ch3_escape_3',
     },
 
@@ -793,6 +1430,66 @@ const SCENES = {
         mood: 'dark',
         speaker: 'Милош',
         text: 'Я знаю, о чём ты думаешь. «Стать таким же?» Нет. Не обязательно.\n\nМожно просто... жить. Нормально есть, нормально спать. Без побоев. Без страха.\n\nПодумай. Бланки у меня.',
+        next: 'ch4_react_choice',
+    },
+
+    ch4_react_choice: {
+        bg: 'barracks',
+        chars: [{ id: 'milosh', x: 0.5 }],
+        mood: 'dark',
+        speaker: null,
+        text: 'Милош ждёт ответа. Бланк контракта — в нагрудном кармане его кителя.',
+        choices: [
+            {
+                id: 'ch4_react_consider',
+                text: '«Дай подумать до учений.»',
+                spirit: 0,
+                setFlag: { considering_contract: true },
+                next: 'ch4_react_consider_1',
+            },
+            {
+                id: 'ch4_react_refuse',
+                text: '«Нет. Я уеду отсюда. Свободным.»',
+                spirit: 5,
+                setFlag: { refused_contract: true },
+                next: 'ch4_react_refuse_1',
+            },
+            {
+                id: 'ch4_react_conditions',
+                text: '«Какие условия? Что конкретно я должен делать?»',
+                spirit: -2,
+                setFlag: { asked_conditions: true },
+                next: 'ch4_react_conditions_1',
+            },
+        ],
+    },
+
+    ch4_react_consider_1: {
+        bg: 'barracks',
+        chars: [{ id: 'milosh', x: 0.5 }],
+        mood: 'dark',
+        speaker: 'Милош',
+        text: '«Хорошо. Подумай. Но не тяни — после учений будет поздно. Комиссия уедет, и бланки уедут с ней.»\n\nМилош хлопнул Марко по плечу и ушёл.',
+        next: 'ch4_s7',
+    },
+
+    ch4_react_refuse_1: {
+        bg: 'barracks',
+        chars: [{ id: 'milosh', x: 0.5 }],
+        mood: 'dark',
+        speaker: 'Милош',
+        text: '«Свободным...»\n\nМилош усмехнулся — без злости, с чем-то похожим на зависть.\n\n«Ладно, Марко. Уважаю. Но если передумаешь — ты знаешь, где меня найти.»',
+        spiritMod: 3,
+        next: 'ch4_s7',
+    },
+
+    ch4_react_conditions_1: {
+        bg: 'barracks',
+        chars: [{ id: 'milosh', x: 0.5 }],
+        mood: 'dark',
+        speaker: 'Милош',
+        text: '«Условия? Три года службы. Зарплата — копейки, но кормёжка, жильё, форма. Через полгода — ефрейтор. Через год — сержант.\n\nИ да — ты будешь поддерживать порядок. Как Горан. Это... часть работы.»\n\nМарко молча кивнул. Информация для размышления.',
+        spiritMod: -1,
         next: 'ch4_s7',
     },
 
@@ -812,6 +1509,65 @@ const SCENES = {
         mood: 'dark',
         speaker: 'Лука',
         text: 'Мама пишет, что ждёт. Каждый день ходит на почту.\n\nМарко, ты ведь не подпишешь контракт? Скажи мне, что не подпишешь.\n\nМне нужно знать, что хоть кто-то отсюда вернётся нормальным человеком.',
+        next: 'ch4_promise_choice',
+    },
+
+    ch4_promise_choice: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5 }],
+        mood: 'dark',
+        speaker: null,
+        text: 'Лука смотрит снизу вверх. Письмо смято в кулаке. Глаза блестят.',
+        choices: [
+            {
+                id: 'ch4_promise_yes',
+                text: '«Обещаю, Лука. Не подпишу. Мы оба вернёмся.»',
+                spirit: 5,
+                setFlag: { promised_luka: true },
+                next: 'ch4_promise_yes_1',
+            },
+            {
+                id: 'ch4_promise_honest',
+                text: '«Я не знаю, Лука. Честно — не знаю.»',
+                spirit: -2,
+                next: 'ch4_promise_honest_1',
+            },
+            {
+                id: 'ch4_promise_deflect',
+                text: '«Расскажи мне про маму. Что она пишет?»',
+                spirit: 2,
+                next: 'ch4_promise_deflect_1',
+            },
+        ],
+    },
+
+    ch4_promise_yes_1: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5 }],
+        mood: 'calm',
+        speaker: 'Лука',
+        text: 'Лука выдохнул. Плечи опустились — напряжение, которое держало его неделями, ослабло на секунду.\n\n«Спасибо, Марко. Это... это важно. Для меня.»\n\nОн снова развернул письмо и начал читать — на этот раз с тенью улыбки.',
+        spiritMod: 3,
+        next: 'ch4_s9',
+    },
+
+    ch4_promise_honest_1: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5 }],
+        mood: 'dark',
+        speaker: 'Лука',
+        text: 'Лука опустил голову. Долго молчал.\n\n«Хотя бы честно. Спасибо и за это.»\n\nОн лёг на койку лицом к стене. Письмо осталось лежать на подушке — раскрытое, как рана.',
+        spiritMod: -1,
+        next: 'ch4_s9',
+    },
+
+    ch4_promise_deflect_1: {
+        bg: 'barracks',
+        chars: [{ id: 'luka', x: 0.5 }],
+        mood: 'calm',
+        speaker: 'Лука',
+        text: '«Мама...» — Лука впервые за недели улыбнулся.\n\n«Пишет, что посадила помидоры. Что кот опять разодрал занавески. Что соседка родила двойню.»\n\nОбычная жизнь. Нормальная, простая жизнь — где-то там, за забором.',
+        spiritMod: 2,
         next: 'ch4_s9',
     },
 
@@ -901,6 +1657,39 @@ const SCENES = {
         mood: 'tension',
         speaker: 'Сержант Горан',
         text: 'Неплохо, Марко. Неплохо. Может, хоть стрелять научился за эти месяцы.',
+        next: 'ch4_endure_reflect',
+    },
+
+    ch4_endure_reflect: {
+        bg: 'range',
+        chars: [],
+        mood: 'dark',
+        speaker: null,
+        text: 'Горан отвернулся. Автомат ещё в руках. Мишень — впереди. Горан — сбоку.\n\nМысль мелькнула — быстро, как вспышка.',
+        choices: [
+            {
+                id: 'ch4_reflect_peace',
+                text: 'Нет. Это не я. Сдать автомат.',
+                spirit: 10,
+                next: 'ch4_endure_3',
+            },
+            {
+                id: 'ch4_reflect_hesitate',
+                text: 'Задержать взгляд на Горане... и сдать автомат.',
+                spirit: 2,
+                setFlag: { hesitated: true },
+                next: 'ch4_endure_hesitate_1',
+            },
+        ],
+    },
+
+    ch4_endure_hesitate_1: {
+        bg: 'range',
+        chars: [{ id: 'goran', x: 0.5, scale: 1.05 }],
+        mood: 'tension',
+        speaker: null,
+        text: 'Горан перехватил его взгляд. На секунду — только на секунду — в глазах сержанта мелькнул страх. Настоящий, животный страх.\n\nПотом Марко сдал автомат. Руки не дрожали.\n\nГоран больше не подходил к нему до конца учений.',
+        spiritMod: 2,
         next: 'ch4_endure_3',
     },
 
@@ -1011,6 +1800,64 @@ const SCENES = {
         mood: 'dark',
         speaker: 'Сержант Горан',
         text: 'Уезжаешь, значит? Ну, бывай, Марко.\n\nТы был крепким. Крепче большинства. Не забудешь меня, а?\n\nГоран усмехнулся. В его глазах не было ни раскаяния, ни злости — только пустота.',
+        next: 'ch5_farewell_choice',
+    },
+
+    ch5_farewell_choice: {
+        bg: 'barracks',
+        chars: [{ id: 'goran', x: 0.5, scale: 1.05 }],
+        mood: 'dark',
+        speaker: null,
+        text: 'Горан протянул руку. Рукопожатие — традиция.',
+        choices: [
+            {
+                id: 'ch5_farewell_shake',
+                text: 'Пожать руку. Молча. Это просто рука.',
+                spirit: 3,
+                next: 'ch5_farewell_shake_1',
+            },
+            {
+                id: 'ch5_farewell_refuse',
+                text: 'Развернуться и уйти. Без слов.',
+                spirit: 5,
+                next: 'ch5_farewell_refuse_1',
+            },
+            {
+                id: 'ch5_farewell_speak',
+                text: '«Я тебя не забуду, Горан. Точно.»',
+                spirit: -3,
+                setFlag: { threatened_goran: true },
+                next: 'ch5_farewell_speak_1',
+            },
+        ],
+    },
+
+    ch5_farewell_shake_1: {
+        bg: 'barracks',
+        chars: [{ id: 'goran', x: 0.5, scale: 1.05 }],
+        mood: 'dark',
+        speaker: null,
+        text: 'Марко пожал руку. Крепко — может, слишком крепко.\n\nГоран усмехнулся. Отпустил.\n\n«Бывай, дух.»\n\nВ последний раз. В последний, чёртов раз.',
+        next: 'ch5_survivor_6',
+    },
+
+    ch5_farewell_refuse_1: {
+        bg: 'barracks',
+        chars: [{ id: 'goran', x: 0.5, scale: 1.05 }],
+        mood: 'tension',
+        speaker: null,
+        text: 'Марко посмотрел на протянутую руку. На ту самую руку, которая держала ремень.\n\nМолча развернулся и пошёл к выходу. За спиной — тишина.\n\nГоран опустил руку. Впервые за долгое время он выглядел... растерянным.',
+        spiritMod: 3,
+        next: 'ch5_survivor_6',
+    },
+
+    ch5_farewell_speak_1: {
+        bg: 'barracks',
+        chars: [{ id: 'goran', x: 0.5, scale: 1.05 }],
+        mood: 'tension',
+        speaker: 'Сержант Горан',
+        text: 'Горан прищурился. Улыбка сползла.\n\n«Это что, угроза, дух? Ты же знаешь — никто тебе не поверит.»\n\nМарко промолчал. Развернулся. Ушёл.\n\nНо они оба знали: это были не пустые слова.',
+        spiritMod: -2,
         next: 'ch5_survivor_6',
     },
 
@@ -1081,6 +1928,54 @@ const SCENES = {
         mood: 'dark',
         speaker: null,
         text: 'Прошло полгода. Потом — год.\n\nМарко получил лычки. Новая форма, новая койка — нижняя, у окна. Новые призывники смотрели на него снизу вверх.',
+        next: 'ch5_system_doubt_choice',
+    },
+
+    ch5_system_doubt_choice: {
+        bg: 'night_barracks',
+        chars: [],
+        mood: 'dark',
+        speaker: null,
+        text: 'Новый призывник не убрал в каптёрке. Мелочь. Но Горан посмотрел на Марко — выжидающе.\n\nТест. Проверка лояльности.',
+        choices: [
+            {
+                id: 'ch5_system_hit',
+                text: 'Ударить. Так положено. Так работает система.',
+                spirit: -10,
+                next: 'ch5_system_5',
+            },
+            {
+                id: 'ch5_system_shout',
+                text: 'Только крикнуть. Голосом, не кулаком.',
+                spirit: -3,
+                next: 'ch5_system_shout_1',
+            },
+            {
+                id: 'ch5_system_hesitate',
+                text: 'Замешкаться. Посмотреть парню в глаза.',
+                spirit: 5,
+                next: 'ch5_system_hesitate_1',
+            },
+        ],
+    },
+
+    ch5_system_shout_1: {
+        bg: 'night_barracks',
+        chars: [{ id: 'goran', x: 0.7, scale: 1.05 }],
+        mood: 'dread',
+        speaker: 'Сержант Горан',
+        text: 'Марко заорал на призывника — голосом, которого сам от себя не ожидал.\n\nПарень вздрогнул. Побежал убирать.\n\nГоран хмыкнул: «Мягко. Но для начала сойдёт.»\n\nВ следующий раз пришлось ударить. И в следующий.',
+        spiritMod: -3,
+        next: 'ch5_system_5',
+    },
+
+    ch5_system_hesitate_1: {
+        bg: 'night_barracks',
+        chars: [{ id: 'goran', x: 0.7, scale: 1.05 }],
+        mood: 'dread',
+        speaker: 'Сержант Горан',
+        text: 'Марко замер. Призывник смотрел на него — те же глаза, что год назад были у самого Марко.\n\nГоран подошёл: «Что, жалко? Ничего, привыкнешь.»\n\nИ ударил сам. А Марко стоял и смотрел.\n\nНо привыкать — пришлось.',
+        spiritMod: 2,
         next: 'ch5_system_5',
     },
 
@@ -1163,7 +2058,48 @@ const SCENES = {
         mood: 'dread',
         speaker: null,
         text: 'Тишина. Три секунды абсолютной тишины — как будто мир задержал дыхание.\n\nМарко стоял с автоматом. Дым поднимался из ствола. Пороховой запах — горький, металлический.',
-        next: 'ch5_lastshot_5',
+        next: 'ch5_lastshot_final_choice',
+    },
+
+    ch5_lastshot_final_choice: {
+        bg: 'range',
+        chars: [],
+        mood: 'dread',
+        speaker: null,
+        text: 'Два тела на земле. Автомат в руках. Офицер кричит с вышки. Мир замедлился.\n\nСекунда, чтобы решить.',
+        choices: [
+            {
+                id: 'ch5_lastshot_continue',
+                text: 'Поднять ствол к небу. Закончить.',
+                spirit: -20,
+                next: 'ch5_lastshot_5',
+            },
+            {
+                id: 'ch5_lastshot_drop',
+                text: 'Бросить автомат. Упасть на колени.',
+                spirit: 5,
+                next: 'ch5_lastshot_drop_1',
+            },
+        ],
+    },
+
+    ch5_lastshot_drop_1: {
+        bg: 'range',
+        chars: [],
+        mood: 'dread',
+        sfx: 'impact',
+        speaker: null,
+        text: 'Автомат упал в грязь. Марко рухнул на колени.\n\nРуки — в земле. Слёзы — по лицу. Крик — из горла, нечеловеческий, животный.\n\nНабежали солдаты. Навалились. Скрутили.',
+        next: 'ch5_lastshot_drop_2',
+    },
+
+    ch5_lastshot_drop_2: {
+        bg: 'range',
+        chars: [],
+        mood: 'ending',
+        speaker: null,
+        text: 'Трибунал. Двадцать лет строгого режима.\n\nГоран выжил — пуля прошла навылет через плечо. Драган — нет.\n\nВ камере Марко тихо. Стены — серые, как казарма. Но здесь не бьют. Здесь просто тишина.\n\nМного, много тишины.',
+        ending: 'lastshot',
     },
 
     ch5_lastshot_5: {
