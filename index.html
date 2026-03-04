@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Dark Service — мрачная визуальная новелла о срочной службе">
+    <meta name="theme-color" content="#1a1a1a">
+    <title>Dark Service</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Overlay effects -->
+    <div id="vignette" class="vignette"></div>
+    <div id="grain" class="grain"></div>
+    <div id="fade-overlay" class="fade-overlay"></div>
+
+    <!-- Main Menu Screen -->
+    <div id="menu-screen" class="screen active">
+        <div class="menu-container">
+            <div class="menu-title-block">
+                <h1 class="menu-title">DARK SERVICE</h1>
+                <p class="menu-subtitle">Визуальная новелла</p>
+            </div>
+            <div class="menu-buttons">
+                <button id="btn-new-game" class="menu-btn">НОВАЯ ИГРА</button>
+                <button id="btn-continue" class="menu-btn" disabled>ПРОДОЛЖИТЬ</button>
+                <button id="btn-settings" class="menu-btn">НАСТРОЙКИ</button>
+            </div>
+            <div class="menu-footer">
+                <p class="menu-quote">«В армии нет людей. Есть только звания.»</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <canvas id="game-canvas"></canvas>
+
+        <!-- Chapter title overlay -->
+        <div id="chapter-title" class="chapter-title hidden">
+            <span class="chapter-label"></span>
+            <span class="chapter-name"></span>
+        </div>
+
+        <!-- Spirit indicator -->
+        <div id="spirit-indicator" class="spirit-indicator">
+            <div class="spirit-label">ДУХ</div>
+            <div class="spirit-bar-container">
+                <div id="spirit-bar" class="spirit-bar" style="width: 50%"></div>
+            </div>
+        </div>
+
+        <!-- Text box -->
+        <div id="text-box" class="text-box hidden">
+            <div id="speaker-name" class="speaker-name"></div>
+            <div id="text-content" class="text-content"></div>
+            <div id="text-continue" class="text-continue hidden">▼</div>
+        </div>
+
+        <!-- Choice box -->
+        <div id="choice-box" class="choice-box hidden">
+            <div class="choice-list" id="choice-list"></div>
+        </div>
+
+        <!-- Menu button in game -->
+        <button id="btn-game-menu" class="game-menu-btn">☰</button>
+    </div>
+
+    <!-- In-game menu overlay -->
+    <div id="ingame-menu" class="overlay hidden">
+        <div class="overlay-panel">
+            <h2>МЕНЮ</h2>
+            <button id="btn-resume" class="menu-btn">ПРОДОЛЖИТЬ</button>
+            <button id="btn-save" class="menu-btn">СОХРАНИТЬ</button>
+            <button id="btn-load" class="menu-btn">ЗАГРУЗИТЬ</button>
+            <button id="btn-settings-ingame" class="menu-btn">НАСТРОЙКИ</button>
+            <button id="btn-to-menu" class="menu-btn">В ГЛАВНОЕ МЕНЮ</button>
+        </div>
+    </div>
+
+    <!-- Settings overlay -->
+    <div id="settings-screen" class="overlay hidden">
+        <div class="overlay-panel">
+            <h2>НАСТРОЙКИ</h2>
+            <div class="setting-row">
+                <label>Скорость текста</label>
+                <input type="range" id="setting-text-speed" min="1" max="5" value="3">
+            </div>
+            <div class="setting-row">
+                <label>Громкость музыки</label>
+                <input type="range" id="setting-music-vol" min="0" max="100" value="50">
+            </div>
+            <div class="setting-row">
+                <label>Громкость звуков</label>
+                <input type="range" id="setting-sfx-vol" min="0" max="100" value="70">
+            </div>
+            <div class="setting-row">
+                <label>Эффекты экрана</label>
+                <input type="checkbox" id="setting-effects" checked>
+            </div>
+            <button id="btn-settings-close" class="menu-btn">ЗАКРЫТЬ</button>
+        </div>
+    </div>
+
+    <!-- Ending screen -->
+    <div id="ending-screen" class="screen">
+        <div class="ending-container">
+            <div id="ending-title" class="ending-title"></div>
+            <div id="ending-text" class="ending-text"></div>
+            <button id="btn-ending-menu" class="menu-btn">В ГЛАВНОЕ МЕНЮ</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="audio.js"></script>
+    <script src="art.js"></script>
+    <script src="scenes.js"></script>
+    <script src="engine.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
